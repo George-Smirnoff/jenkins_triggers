@@ -1,0 +1,22 @@
+//trigger the local job using the standard cron
+pipeline{
+    agent any
+    options { 
+        timestamps ()
+    }
+    triggers {
+        pollSCM("* * * * *")
+    }
+    stages{
+        stage("A"){
+            steps{
+                checkout([$class: 'GitSCM',
+                branches:[[name: "origin/master"]],
+                userRemoteConfigs: [[
+                    url: 'https://github.com/George-Smirnoff/jenkins_triggers.git'
+                ]]
+                ])
+            }
+        }
+    }
+}
